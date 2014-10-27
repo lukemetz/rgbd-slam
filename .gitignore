@@ -3,3 +3,4 @@ bin/
 *.cmake
 *.o
 CMakeFiles
+CMakeCache.txt
