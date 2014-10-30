@@ -1,10 +1,11 @@
 #include "transform.h"
 #include <opencv2/features2d/features2d.hpp>
 #include <opencv2/nonfree/features2d.hpp>
+#include "data.h"
 
 using namespace cv;
 
-cv::Mat transform_from_images(cv::Mat prev, cv::Mat cur) {
+cv::Mat transform_from_images(cv::Mat prev, cv::Mat prev_depth, cv::Mat cur, cv::Mat cur_depth) {
   cv::imshow("thing", prev);
 
   // TODO these both have parameters
@@ -58,7 +59,6 @@ cv::Mat transform_from_images(cv::Mat prev, cv::Mat cur) {
   }
 
   waitKey(0);
-
 
   return cur;
 }

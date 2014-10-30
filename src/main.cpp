@@ -2,21 +2,15 @@
 #include "transform.h"
 #include "qcustomplot.h"
 #include <QApplication>
+#include <armadillo>
+#include <vector>
+#include "data.h"
 
-std::string data_path = "/Users/scope/slam_data/rgbd_dataset_freiburg1_rpy/";
 
-std::string cur = "1305031229.528748.png";
-std::string cur_d ="1305031229.564442.png";
-std::string prev = "1305031229.596600.png";
+double cur = 1305031229.528748;
+double prev = 1305031229.596600;
 //std::string prev = "1305031232.093725.png";
 
-cv::Mat rgb_image(std::string name) {
-  return cv::imread(data_path+"rgb/"+name);
-}
-
-cv::Mat d_image(std::string name) {
-  return cv::imread(data_path+"depth/"+name);
-}
 
 void basic_plot() {
   QCustomPlot *customPlot = new QCustomPlot();
@@ -41,6 +35,10 @@ void basic_plot() {
 }
 
 int main(int argc, char **argv) {
+  //get_times("rgb");
+  double time = 1305031229.596600;
+  get_closest_depth(time);
+  std::cout << get_times_vec("rgb")[0] << "Times vec" << std::endl;
   QApplication app (argc, argv);
   //basic_plot();
 
@@ -50,7 +48,15 @@ int main(int argc, char **argv) {
   cv::imshow("im2", d_image(cur_d));
   cv::waitKey(0);
   */
-  transform_from_images(rgb_image(prev), rgb_image(cur));
+
+  cv::Mat prev_rgb = rgb_image(prev);
+  cv::Mat cur_rgb = rgb_image(cur);
+
+  cv::Mat prev_depth = depth_image_near(prev);
+  cv::Mat cur_depth = depth_image_near(cur);
+
+  transform_from_images(prev_rgb, prev_depth, cur_rgb, cur_depth);
+
   //app.exec();
 
   return 0;
