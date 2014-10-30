@@ -7,7 +7,8 @@ std::string data_path = "/Users/scope/slam_data/rgbd_dataset_freiburg1_rpy/";
 
 std::string cur = "1305031229.528748.png";
 std::string cur_d ="1305031229.564442.png";
-std::string prev = "1305031229.528748.png";
+std::string prev = "1305031229.596600.png";
+//std::string prev = "1305031232.093725.png";
 
 cv::Mat rgb_image(std::string name) {
   return cv::imread(data_path+"rgb/"+name);
@@ -31,7 +32,6 @@ void basic_plot() {
   customPlot->graph(0)->setData(x, y);
   // give the axes some labels:
   customPlot->xAxis->setLabel("x");
-  customPlot->yAxis->setLabel("y");
   // set axes ranges, so we see all data:
   customPlot->xAxis->setRange(-1, 1);
   customPlot->yAxis->setRange(0, 1);
@@ -42,12 +42,15 @@ void basic_plot() {
 
 int main(int argc, char **argv) {
   QApplication app (argc, argv);
-  basic_plot();
+  //basic_plot();
 
 
+  /*
   cv::imshow("im", rgb_image(cur));
   cv::imshow("im2", d_image(cur_d));
   cv::waitKey(0);
+  */
+  transform_from_images(rgb_image(prev), rgb_image(cur));
   //app.exec();
 
   return 0;

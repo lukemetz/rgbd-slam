@@ -13,11 +13,17 @@ add_definitions("-O3")
 include(${QT_USE_FILE})
 include_directories(src)
 include_directories(lib/qcustomplot)
+
+aux_source_directory(src SOURCE)
+
 add_executable(rgdb
-  src/main.cpp )
+  ${SOURCE}
+)
+
 target_link_libraries(rgdb
   ${OpenCV_LIBS}
   ${QT_LIBRARIES}
-  ${CMAKE_SOURCE_DIR}/lib/qcustomplot/libqcustomplot.a)
+  ${CMAKE_SOURCE_DIR}/lib/qcustomplot/libqcustomplot.a
+)
 
 
