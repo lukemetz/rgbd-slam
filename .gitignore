@@ -4,3 +4,6 @@ bin/
 *.o
 CMakeFiles
 CMakeCache.txt
+*.cxx
+*.a
+*.cxx_parameters
