@@ -54,8 +54,43 @@ int main(int argc, char **argv) {
 
   cv::Mat prev_depth = depth_image_near(prev);
   cv::Mat cur_depth = depth_image_near(cur);
+  /*
+  std::vector<double> depths = get_times_vec("rgb");
+  auto depths_out = arma::mat(depths.size(), 1);
+  auto i = 0;
+  for (double d : depths) {
+    cv::Mat cur_depth = depth_image_near(d);
+    //std::cout << cur_depth << std::endl;
+    std::cout << to_3d_pos(cur_depth, Point2i(400, 300)) << std::endl;
+    depths_out.at(i++, 0) = to_3d_pos(cur_depth, Point2i(320, 240)).z;
+  } */
 
-  transform_from_images(prev_rgb, prev_depth, cur_rgb, cur_depth);
+  //depths_out.save("plot.csv", arma::csv_ascii);
+
+  //std::cout << to_3d_pos(cur_depth, Point2i(401, 300)) << std::endl;
+  //std::cout << to_3d_pos(cur_depth, Point2i(402, 300)) << std::endl;
+  //std::cout << to_3d_pos(cur_depth, Point2i(403, 300)) << std::endl;
+  //imshow("this", cur_depth);
+  //waitKey(0);
+
+  std::vector<double> imgs = get_times_vec("rgb");
+  for (int k=0; k < 7; ++k) {
+    cv::Mat prev_rgb = rgb_image(imgs[k]);
+    cv::Mat prev_depth = depth_image_near(imgs[k]);
+    cv::Mat cur_rgb = rgb_image(imgs[k+1]);
+    cv::Mat cur_depth = depth_image_near(imgs[k+1]);
+    auto affine = transform_from_images(prev_rgb, prev_depth, cur_rgb, cur_depth);
+    std::cout << affine << std::endl << std::endl;
+
+    cv::Mat next_rgb = rgb_image(imgs[k+3]);
+    cv::Mat next_depth = depth_image_near(imgs[k+3]);
+    auto affine2 = transform_from_images(prev_rgb, prev_depth, next_rgb, next_depth);
+    std::cout << affine2 << std::endl << std::endl;
+    std::cout << "==" << std::endl;
+
+
+  }
+
 
   //app.exec();
 

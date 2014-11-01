@@ -6,6 +6,9 @@
 #include <QApplication>
 #include <armadillo>
 #include <vector>
+#include <opencv2/opencv.hpp>
+
+using namespace cv;
 
 static std::string data_path = "/Users/scope/slam_data/rgbd_dataset_freiburg1_rpy/";
 
@@ -35,10 +38,13 @@ inline cv::Mat rgb_image(double time) {
 }
 
 inline cv::Mat depth_image(double time) {
-  return cv::imread(data_path+"depth/"+std::to_string(time)+".png");
+  return cv::imread(data_path+"depth/"+std::to_string(time)+".png", CV_LOAD_IMAGE_ANYCOLOR | CV_LOAD_IMAGE_ANYDEPTH);
 }
 
 inline cv::Mat depth_image_near(double time) {
   double t = get_closest_depth(time);
   return depth_image(t);
 }
+
+
+Point3f to_3d_pos(cv::Mat depth, Point2i point);
