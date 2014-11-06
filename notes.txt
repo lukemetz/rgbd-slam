@@ -1,0 +1,26 @@
+calibration matrix
+Compute K <-- see slides. Nicer mapping from 2d to 3d and so on.
+  Have the camera calebration step done!
+  Nonlinear distortion patterns are managed by kinect for me!
+
+x = KR[I| -C]x
+[I| -C] is the shove on side of matrix
+
+
+all epipolar lines converge on the epipole
+Where the optical sensor of one camera would be imaged in the other cameras view.
+
+that
+r F j^t = 0 satsify the epipolar line << see reading for why this is the case.
+Once we know f, fix one of the things, then can calculate the other cordnates.
+
+Can expand out rFj
+You can scale F. So there are only 8 points needed. Recover f beyond a scale factor. no absolute??
+
+Once you get f and know K its easy to etract out rotations and translation between two cameras. See readings. 4 different possible. Don't know magnitude of translation.
+
+
+Need some helpful functions to convert between differnt spaces.
+Know point in view 1, lies on epipolar line. Slide it around on view two until it matches
+
+Ask paul for the name of that subset of 8 points???? << same as other algorithms

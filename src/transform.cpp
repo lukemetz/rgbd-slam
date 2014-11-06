@@ -67,22 +67,41 @@ cv::Mat transform_from_images(cv::Mat prev, cv::Mat prev_depth, cv::Mat cur, cv:
     auto prev_pt = to_3d_pos(prev_depth, prev_keypoint.pt);
     auto cur_pt = to_3d_pos(cur_depth, cur_keypoint.pt);
 
-    std::cout << prev_keypoint.pt << "__" << cur_keypoint.pt << std::endl;
-    std::cout << prev_pt << "__" << cur_pt << std::endl;
     if (prev_pt.z <= 0.1 || cur_pt.z <= 0.1) {
       continue;
     }
+    std::cout << prev_keypoint.pt << "__" << cur_keypoint.pt << std::endl;
+    std::cout << prev_pt << "__" << cur_pt << std::endl;
 
     prev_points.push_back(prev_pt);
     cur_points.push_back(cur_pt);
   }
 
   std::vector<uchar> inliers;
-  cv::Mat aff(3,4,CV_64F);
+  cv::Mat aff(3,4, CV_32F);
   auto ransac_threshold = 1;
   //auto ransac_threshold = 0.1;
   auto confidence = 0.99;
   estimateAffine3D(prev_points, cur_points, aff, inliers, ransac_threshold, confidence);
+
+  auto test = Mat(prev_points[0], CV_32F);
+  std::cout << "preconcat" << std::endl;
+
+  cv::Mat mat;
+  vconcat(test, Mat::ones(1,1, CV_32F), mat);
+  test = mat;
+
+  std::cout << test << "test" << std::endl;
+  cv::transpose(aff, aff);
+  cv::transpose(test, test);
+
+  std::cout << aff.size() << std::endl;
+  std::cout << test.size() << std::endl;
+
+  cv::Mat out;
+  transform(test, out, aff);
+
+  std::cout << "prev" << out << std::endl;
 
   waitKey(0);
 
